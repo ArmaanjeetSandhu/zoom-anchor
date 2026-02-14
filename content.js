@@ -7,29 +7,33 @@ indicator.style.cssText = `
     position: fixed !important;
     z-index: 2147483647 !important;
     
-    padding: 25px 40px !important;
-    border-radius: 16px !important;
+    padding: 20px 36px !important;
+    border-radius: 24px !important;
     
-    background: rgba(30, 30, 30, 0.2) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(45px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(10, 10, 10, 0.15) !important;
+    backdrop-filter: blur(30px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 
-    color: white !important;
+    color: rgba(255, 255, 255, 0.95) !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    font-size: 22px !important;
-    font-weight: 600 !important;
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 12px !important;
     
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+    box-shadow: 
+        0 15px 40px rgba(0,0,0,0.15),
+        0 0 0 1px rgba(255,255,255,0.05) inset !important;
     
     pointer-events: none !important;
     
     opacity: 0 !important;
-    transition: opacity 0.3s ease-in-out !important;
 `;
 
 const updatePosition = () => {
@@ -120,20 +124,23 @@ function showHud(locked) {
 
   if (locked)
     indicator.innerHTML = `
-            <span style="font-size: 28px">🔒</span> 
-            <span>LOCKED</span>
+            <span style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">🔒</span> 
+            <span>Locked</span>
         `;
   else
     indicator.innerHTML = `
-            <span style="font-size: 28px">🔓</span> 
-            <span>UNLOCKED</span>
+            <span style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">🔓</span> 
+            <span>Unlocked</span>
         `;
 
-  setTimeout(() => {
+  indicator.style.transition = "opacity 0.2s ease-out";
+
+  requestAnimationFrame(() => {
     indicator.style.opacity = "1";
-  }, 10);
+  });
 
   fadeTimeout = setTimeout(() => {
+    indicator.style.transition = "opacity 0.4s ease-in-out";
     indicator.style.opacity = "0";
   }, 1500);
 }
