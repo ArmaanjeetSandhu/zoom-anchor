@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Zoom Anchor",
+  "version": "1.0",
+  "description": "Lock zoom level and disable horizontal scrolling via keyboard shortcut (Alt + L).",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
