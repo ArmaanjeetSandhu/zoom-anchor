@@ -7,10 +7,6 @@ indicator.style.cssText = `
     position: fixed !important;
     z-index: 2147483647 !important;
     
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    
     padding: 25px 40px !important;
     border-radius: 16px !important;
     
@@ -36,13 +32,39 @@ indicator.style.cssText = `
     transition: opacity 0.3s ease-in-out !important;
 `;
 
+const updatePosition = () => {
+  if (window.visualViewport) {
+    const viewport = window.visualViewport;
+    const left = viewport.offsetLeft + viewport.width / 2;
+    const top = viewport.offsetTop + viewport.height / 2;
+    const scale = viewport.scale;
+
+    indicator.style.left = `${left}px`;
+    indicator.style.top = `${top}px`;
+    indicator.style.transform = `translate(-50%, -50%) scale(${1 / scale})`;
+  } else {
+    indicator.style.left = "50%";
+    indicator.style.top = "50%";
+    indicator.style.transform = "translate(-50%, -50%)";
+  }
+};
+
 const mountIndicator = () => {
   if (!document.documentElement.contains(indicator))
     document.documentElement.appendChild(indicator);
+  updatePosition();
 };
 
 if (document.documentElement) mountIndicator();
 else document.addEventListener("DOMContentLoaded", mountIndicator);
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", updatePosition);
+  window.visualViewport.addEventListener("scroll", updatePosition);
+}
+
+window.addEventListener("resize", updatePosition);
+window.addEventListener("scroll", updatePosition);
 
 document.addEventListener(
   "wheel",
@@ -87,6 +109,7 @@ document.addEventListener("keydown", (e) => {
 
 function showHud(locked) {
   mountIndicator();
+  updatePosition();
 
   if (fadeTimeout) clearTimeout(fadeTimeout);
 
