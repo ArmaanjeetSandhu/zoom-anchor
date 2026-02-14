@@ -104,6 +104,11 @@ document.addEventListener("keydown", (e) => {
   if (e.altKey && e.code === "KeyL") {
     isLocked = !isLocked;
     showHud(isLocked);
+
+    chrome.runtime.sendMessage({
+      action: "updateIcon",
+      locked: isLocked,
+    });
   }
 });
 
