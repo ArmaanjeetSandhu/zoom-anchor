@@ -3,6 +3,18 @@
   "name": "Zoom Anchor",
   "version": "1.0",
   "description": "Lock zoom level and disable horizontal scrolling via keyboard shortcut (Alt + L).",
+  "icons": {
+    "16": "anchor.png",
+    "48": "anchor.png",
+    "128": "anchor.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "anchor.png",
+      "48": "anchor.png",
+      "128": "anchor.png"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
