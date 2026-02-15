@@ -1,6 +1,6 @@
 # Zoom Anchor ⚓️
 
-**Zoom Anchor** is a browser extension to lock your current zoom level and disable horizontal scrolling. It allows you to position a webpage exactly how you want it—perfectly centred with balanced margins—and "anchor" it in place, preventing accidental swipes or trackpad gestures from ruining your reading layout.
+**Zoom Anchor** is a browser extension to lock your current zoom level and disable horizontal scrolling. It allows you to zoom in on a webpage exactly how you want it and "anchor" it in place, preventing accidental swipes or trackpad gestures from ruining your reading layout.
 
 ## Motivation
 
@@ -26,8 +26,8 @@ A common workaround is to zoom in on the text such that it appears centred. But 
 ## Installation
 
 1. Download or clone this repository to your local machine.
-2. Open Google Chrome (or any Chromium-based browser like Brave or Edge).
-3. Navigate to `chrome://extensions/`.
+2. Open any Chromium-based browser.
+3. Navigate to your browser's extensions management page.
 4. Toggle **Developer mode** in the top right corner.
 5. Click **Load unpacked**.
 6. Select the folder containing this extension's files.

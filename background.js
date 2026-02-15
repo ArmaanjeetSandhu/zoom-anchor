@@ -32,3 +32,16 @@ chrome.runtime.onMessage.addListener((request, sender) => {
       });
   }
 });
+
+chrome.action.onClicked.addListener((tab) => {
+  if (tab.id) chrome.tabs.sendMessage(tab.id, { action: "toggleLock" });
+});
+
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "toggle-lock") {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0 && tabs[0].id)
+        chrome.tabs.sendMessage(tabs[0].id, { action: "toggleLock" });
+    });
+  }
+});

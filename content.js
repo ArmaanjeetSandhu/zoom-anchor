@@ -104,8 +104,8 @@ document.addEventListener(
   { passive: false },
 );
 
-document.addEventListener("keydown", (e) => {
-  if (e.altKey && e.code === "KeyL") {
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.action === "toggleLock") {
     isLocked = !isLocked;
     showHud(isLocked);
 

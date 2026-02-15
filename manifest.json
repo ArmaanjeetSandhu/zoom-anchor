@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Zoom Anchor",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Lock zoom level and disable horizontal scrolling via keyboard shortcut (Alt + L).",
   "icons": {
     "16": "anchor.png",
@@ -9,6 +9,7 @@
     "128": "anchor.png"
   },
   "action": {
+    "default_title": "Toggle Zoom Anchor",
     "default_icon": {
       "16": "anchor.png",
       "48": "anchor.png",
@@ -17,6 +18,14 @@
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "commands": {
+    "toggle-lock": {
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "Toggle lock state"
+    }
   },
   "content_scripts": [
     {
