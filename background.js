@@ -1,35 +1,40 @@
+let iconCache = {};
+
+async function loadIconData(path) {
+  const response = await fetch(chrome.runtime.getURL(path));
+  const blob = await response.blob();
+  const imageBitmap = await createImageBitmap(blob);
+  const canvas = new OffscreenCanvas(128, 128);
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(imageBitmap, 0, 0, 128, 128);
+  return ctx.getImageData(0, 0, 128, 128);
+}
+
+async function preloadIcons() {
+  const [unlocked, locked] = await Promise.all([
+    loadIconData("anchor.png"),
+    loadIconData("anchor-red.png"),
+  ]);
+  iconCache = { unlocked, locked };
+}
+
+preloadIcons().catch((error) =>
+  console.error("Failed to preload icons:", error),
+);
+
 chrome.runtime.onMessage.addListener((request, sender) => {
   if (request.action === "updateIcon" && sender.tab) {
-    const iconPath = request.locked ? "anchor-red.png" : "anchor.png";
+    const imageData = request.locked ? iconCache.locked : iconCache.unlocked;
 
-    fetch(chrome.runtime.getURL(iconPath))
-      .then((response) => response.blob())
-      .then((blob) => createImageBitmap(blob))
-      .then((imageBitmap) => {
-        const canvas = new OffscreenCanvas(128, 128);
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(imageBitmap, 0, 0, 128, 128);
-        return ctx.getImageData(0, 0, 128, 128);
-      })
-      .then((imageData) => {
-        chrome.action.setIcon(
-          {
-            imageData: imageData,
-            tabId: sender.tab.id,
-          },
-          () => {
-            if (chrome.runtime.lastError)
-              console.error(
-                "Icon update failed:",
-                chrome.runtime.lastError.message,
-              );
-            else console.log("Icon updated successfully to:", iconPath);
-          },
-        );
-      })
-      .catch((error) => {
-        console.error("Failed to load icon:", error);
-      });
+    if (!imageData) {
+      console.warn("Icon cache not ready, skipping update.");
+      return;
+    }
+
+    chrome.action.setIcon({ imageData, tabId: sender.tab.id }, () => {
+      if (chrome.runtime.lastError)
+        console.error("Icon update failed:", chrome.runtime.lastError.message);
+    });
   }
 });
 
