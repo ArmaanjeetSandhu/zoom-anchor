@@ -104,6 +104,23 @@ document.addEventListener(
   { passive: false },
 );
 
+document.addEventListener(
+  "keydown",
+  (e) => {
+    if (!isLocked) return;
+
+    const activeElement = document.activeElement;
+    const isTyping =
+      activeElement.tagName === "INPUT" ||
+      activeElement.tagName === "TEXTAREA" ||
+      activeElement.isContentEditable;
+
+    if (!isTyping && (e.key === "ArrowLeft" || e.key === "ArrowRight"))
+      e.preventDefault();
+  },
+  { passive: false },
+);
+
 chrome.runtime.onMessage.addListener((request) => {
   if (request.action === "toggleLock") {
     isLocked = !isLocked;
