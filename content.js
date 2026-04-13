@@ -1,5 +1,12 @@
-let isLocked = false;
+const STORAGE_KEY = "zoom_anchor_locked_state";
+let isLocked = sessionStorage.getItem(STORAGE_KEY) === "true";
 let fadeTimeout;
+
+if (isLocked)
+  chrome.runtime.sendMessage({
+    action: "updateIcon",
+    locked: true,
+  });
 
 const indicator = document.createElement("div");
 
@@ -124,6 +131,7 @@ document.addEventListener(
 chrome.runtime.onMessage.addListener((request) => {
   if (request.action === "toggleLock") {
     isLocked = !isLocked;
+    sessionStorage.setItem(STORAGE_KEY, isLocked.toString());
     showHud(isLocked);
 
     chrome.runtime.sendMessage({

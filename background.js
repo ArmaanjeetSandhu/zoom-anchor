@@ -1,4 +1,5 @@
 let iconCache = {};
+let iconsLoadedPromise = preloadIcons();
 
 async function loadIconData(path) {
   const response = await fetch(chrome.runtime.getURL(path));
@@ -24,16 +25,21 @@ preloadIcons().catch((error) =>
 
 chrome.runtime.onMessage.addListener((request, sender) => {
   if (request.action === "updateIcon" && sender.tab) {
-    const imageData = request.locked ? iconCache.locked : iconCache.unlocked;
+    iconsLoadedPromise.then(() => {
+      const imageData = request.locked ? iconCache.locked : iconCache.unlocked;
 
-    if (!imageData) {
-      console.warn("Icon cache not ready, skipping update.");
-      return;
-    }
+      if (!imageData) {
+        console.warn("Icon cache not ready, skipping update.");
+        return;
+      }
 
-    chrome.action.setIcon({ imageData, tabId: sender.tab.id }, () => {
-      if (chrome.runtime.lastError)
-        console.error("Icon update failed:", chrome.runtime.lastError.message);
+      chrome.action.setIcon({ imageData, tabId: sender.tab.id }, () => {
+        if (chrome.runtime.lastError)
+          console.error(
+            "Icon update failed:",
+            chrome.runtime.lastError.message,
+          );
+      });
     });
   }
 });
