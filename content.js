@@ -82,7 +82,7 @@ document.addEventListener(
   (e) => {
     if (!isLocked) return;
 
-    if (e.ctrlKey) {
+    if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
       return;
     }
@@ -115,6 +115,14 @@ document.addEventListener(
   "keydown",
   (e) => {
     if (!isLocked) return;
+
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      (e.key === "=" || e.key === "+" || e.key === "-" || e.key === "0")
+    ) {
+      e.preventDefault();
+      return;
+    }
 
     const activeElement = document.activeElement;
     const isTyping =
