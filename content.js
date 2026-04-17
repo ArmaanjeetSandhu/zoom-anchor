@@ -1,4 +1,6 @@
-const STORAGE_KEY = "zoom_anchor_locked_state";
+const STORAGE_KEY =
+  "zoom_anchor_locked_" + window.location.pathname + window.location.search;
+
 let isLocked = sessionStorage.getItem(STORAGE_KEY) === "true";
 let fadeTimeout;
 
