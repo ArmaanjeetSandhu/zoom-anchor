@@ -1,5 +1,7 @@
 const STORAGE_KEY =
-  "zoom_anchor_locked_" + window.location.pathname + window.location.search;
+  "zoom_anchor_locked_" +
+  globalThis.location.pathname +
+  globalThis.location.search;
 
 let isLocked = sessionStorage.getItem(STORAGE_KEY) === "true";
 let fadeTimeout;
@@ -89,10 +91,7 @@ document.addEventListener(
       return;
     }
 
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      e.preventDefault();
-      return;
-    }
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.preventDefault();
   },
   { passive: false },
 );
